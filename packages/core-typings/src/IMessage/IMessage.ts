@@ -259,3 +259,5 @@ export const isIMessageInbox = (message: IMessage): message is IMessageInbox =>
   "email" in message;
 export const isVoipMessage = (message: IMessage): message is IVoipMessage =>
   "voipData" in message;
+
+export type IOmniRoomClosingMessage = Pick<IMessage, 't' | 'groupable'> & Partial<Pick<IMessage, 'msg'>>
