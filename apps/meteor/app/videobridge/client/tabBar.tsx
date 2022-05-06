@@ -9,6 +9,8 @@ import { useUser } from '../../../client/contexts/UserContext';
 import Header from '../../../client/components/Header';
 import { useSetModal } from '../../../client/contexts/ModalContext';
 import StartVideoConfModal from '../../../client/views/room/contextualBar/Call/StartVideoConfModal';
+import RingingPopup from '../../../client/views/room/contextualBar/Call/RingingPopup/RingingPopup';
+import { useVideoConfCall } from '../../../client/contexts/VideoConfContext';
 
 const templateBBB = lazy(() => import('../../../client/views/room/contextualBar/Call/BBB'));
 
@@ -142,3 +144,23 @@ addAction('video-conf', ({ room }) => {
 		[handleOpenVideoConf],
 	);
 });
+
+addAction('video-conf-popup', ({ room }) => {
+	const setPopup = useVideoConfCall();
+
+	const handleCloseVideoConf = useMutableCallback(() => setPopup(undefined));
+	const handleOpenVideoConf = useMutableCallback((): void => setPopup(<RingingPopup room={room} onClose={handleCloseVideoConf} />));
+
+	return useMemo(
+		() => ({
+			groups: ['direct', 'group', 'channel'],
+			id: 'video-popup',
+			title: 'popup',
+			icon: 'video',
+			action: handleOpenVideoConf,
+			full: true,
+			order: -1,
+		}),
+		[handleOpenVideoConf],
+	);
+})

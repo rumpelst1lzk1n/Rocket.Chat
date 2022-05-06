@@ -21,6 +21,7 @@ import { useUserId } from '../../../../../contexts/UserContext';
 import { AsyncStatePhase } from '../../../../../hooks/useAsyncState';
 import { useEndpointData } from '../../../../../hooks/useEndpointData';
 
+// TODO: Replace controllers state by hook
 const StartVideoConfModal = ({ room, onClose }: { room: IRoom; onClose: () => void }): ReactElement => {
 	const t = useTranslation();
 	const userId = useUserId();
