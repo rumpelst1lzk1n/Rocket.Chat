@@ -5,6 +5,7 @@
 		"declaration": true,
 		"declarationMap": true,
 		"sourceMap": true,
+		"composite": true,
 		"strict": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
@@ -14,5 +15,6 @@
 		"jsx": "react-jsx",
 		"importsNotUsedAsValues": "error"
 	},
-	"exclude": ["node_modules", "**/*.spec.ts"]
+	"exclude": ["node_modules", "**/*.spec.ts"],
+	"references": [{ "path": "./packages/core-typings" }, { "path": "./packages/rest-typings" }, { "path": "./packages/ui-contexts" }]
 }

@@ -1,0 +1,12 @@
+{
+	"extends": "../../../tsconfig.base.json",
+	"compilerOptions": {
+		"importsNotUsedAsValues": "error",
+		"composite": true
+	},
+	"references": [
+		{ "path": "../../../packages/core-typings" },
+		{ "path": "../../../packages/rest-typings" },
+		{ "path": "../../../packages/ui-contexts" }
+	]
+}
