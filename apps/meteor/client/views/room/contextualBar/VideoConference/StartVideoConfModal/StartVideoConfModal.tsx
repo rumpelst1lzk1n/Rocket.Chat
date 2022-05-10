@@ -1,5 +1,6 @@
 import { IRoom } from '@rocket.chat/core-typings';
 import { Box, TextInput, Skeleton } from '@rocket.chat/fuselage';
+import { useTranslation, useUserId } from '@rocket.chat/ui-contexts';
 import {
 	VideoConfModal,
 	VideoConfModalContent,
@@ -16,8 +17,6 @@ import React, { ReactElement, useState, ChangeEvent, useMemo } from 'react';
 
 import ReactiveUserStatus from '../../../../../components/UserStatus/ReactiveUserStatus';
 import RoomAvatar from '../../../../../components/avatar/RoomAvatar';
-import { useTranslation } from '../../../../../contexts/TranslationContext';
-import { useUserId } from '../../../../../contexts/UserContext';
 import { AsyncStatePhase } from '../../../../../hooks/useAsyncState';
 import { useEndpointData } from '../../../../../hooks/useEndpointData';
 
