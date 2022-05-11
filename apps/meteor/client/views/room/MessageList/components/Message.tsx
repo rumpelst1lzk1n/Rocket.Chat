@@ -2,6 +2,7 @@
 import type { ISubscription, IMessage } from '@rocket.chat/core-typings';
 import { Message as MessageTemplate, MessageLeftContainer, MessageContainer, MessageBody, CheckBox } from '@rocket.chat/fuselage';
 import { useToggle } from '@rocket.chat/fuselage-hooks';
+import { useUser } from '@rocket.chat/ui-contexts';
 import React, { FC, memo } from 'react';
 
 import UserAvatar from '../../../../components/avatar/UserAvatar';
@@ -21,6 +22,7 @@ const Message: FC<{ message: IMessage; sequential: boolean; subscription?: ISubs
 }) => {
 	const isMessageHighlight = useIsMessageHighlight(message._id);
 	const [isMessageIgnored, toggleMessageIgnored] = useToggle(message.ignored);
+	const user = useUser();
 
 	const isSelecting = useIsSelecting();
 	const toggleSelected = useToggleSelect(message._id);
@@ -38,7 +40,9 @@ const Message: FC<{ message: IMessage; sequential: boolean; subscription?: ISubs
 			data-qa-selected={isSelected}
 		>
 			<MessageLeftContainer>
-				{!sequential && message.u.username && !isSelecting && <UserAvatar username={message.u.username} size={'x36'} />}
+				{!sequential && message.u.username && !isSelecting && (
+					<UserAvatar username={message.u.username} etag={user?.avatarETag} size={'x36'} />
+				)}
 				{isSelecting && <CheckBox checked={isSelected} onChange={toggleSelected} />}
 				{sequential && <MessageIndicators message={message} />}
 			</MessageLeftContainer>
