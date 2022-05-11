@@ -21,7 +21,7 @@ import { AsyncStatePhase } from '../../../../../hooks/useAsyncState';
 import { useEndpointData } from '../../../../../hooks/useEndpointData';
 
 // TODO: Replace controllers state by hook
-const StartVideoConfModal = ({ room, onClose }: { room: IRoom; onClose: () => void }): ReactElement => {
+const StartVideoConfModal = ({ room, onClose, onConfirm }: { room: IRoom; onClose: () => void; onConfirm: () => void }): ReactElement => {
 	const t = useTranslation();
 	const userId = useUserId();
 	const rid = room._id;
@@ -88,7 +88,7 @@ const StartVideoConfModal = ({ room, onClose }: { room: IRoom; onClose: () => vo
 				)}
 			</VideoConfModalContent>
 			<VideoConfModalFooter>
-				<VideoConfModalFooterButton primary icon='phone'>
+				<VideoConfModalFooterButton onClick={onConfirm} primary icon='phone'>
 					{t('Start_call')}
 				</VideoConfModalFooterButton>
 				<VideoConfModalFooterButton onClick={onClose}>{t('Cancel')}</VideoConfModalFooterButton>
