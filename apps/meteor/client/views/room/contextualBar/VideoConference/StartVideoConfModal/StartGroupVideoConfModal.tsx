@@ -1,5 +1,5 @@
 import { IRoom } from '@rocket.chat/core-typings';
-import { TextInput, Skeleton } from '@rocket.chat/fuselage';
+import { TextInput } from '@rocket.chat/fuselage';
 import { useTranslation } from '@rocket.chat/ui-contexts';
 import {
 	VideoConfModal,
@@ -7,32 +7,26 @@ import {
 	VideoConfModalInfo,
 	VideoConfModalTitle,
 	VideoConfModalControllers,
-	VideoConfModalController,
+	VideoConfController,
 	VideoConfModalFooter,
-	VideoConfModalControllerButton,
-	VideoConfModalFooterButton,
+	VideoConfButton,
 	useVideoConfControllers,
 	VideoConfModalField,
 } from '@rocket.chat/ui-video-conf';
-import React, { ReactElement, useMemo, useState, ChangeEvent } from 'react';
+import React, { ReactElement, useState, ChangeEvent } from 'react';
 
 import RoomAvatar from '../../../../../components/avatar/RoomAvatar';
-import { AsyncStatePhase } from '../../../../../hooks/useAsyncState';
-import { useEndpointData } from '../../../../../hooks/useEndpointData';
 
 type StartGroupVideoConfModalProps = {
 	room: IRoom;
 	onClose: () => void;
+	onConfirm: () => void;
 };
 
-const StartGroupVideoConfModal = ({ room, onClose }: StartGroupVideoConfModalProps): ReactElement => {
+const StartGroupVideoConfModal = ({ room, onClose, onConfirm }: StartGroupVideoConfModalProps): ReactElement => {
 	const t = useTranslation();
-	const rid = room._id;
 	const [confName, setConfName] = useState<string | undefined>(undefined);
 	const { controllersConfig, handleToggleMic, handleToggleVideo } = useVideoConfControllers();
-
-	const params = useMemo(() => ({ roomId: rid }), [rid]);
-	const { phase, value } = useEndpointData('rooms.info', params);
 
 	return (
 		<VideoConfModal>
@@ -40,28 +34,23 @@ const StartGroupVideoConfModal = ({ room, onClose }: StartGroupVideoConfModalPro
 				<RoomAvatar room={room} size='x124' />
 				<VideoConfModalTitle>{t('Start_conference_call')}</VideoConfModalTitle>
 				<VideoConfModalInfo>
-					{phase === AsyncStatePhase.LOADING && <Skeleton />}
-					{value?.room.usersCount && t('__userCount__people_will_be_invited', { userCount: value.room.usersCount - 1 })}
+					{room.usersCount && t('__userCount__people_will_be_invited', { userCount: room.usersCount - 1 })}
 				</VideoConfModalInfo>
 				<VideoConfModalControllers>
-					<VideoConfModalController>
-						<VideoConfModalControllerButton
-							primary={controllersConfig.mic}
-							text={controllersConfig.mic ? t('Mic_on') : t('Mic_off')}
-							title={controllersConfig.mic ? t('Mic_on') : t('Mic_off')}
-							icon={controllersConfig.mic ? 'mic' : 'mic-off'}
-							onClick={handleToggleMic}
-						/>
-					</VideoConfModalController>
-					<VideoConfModalController>
-						<VideoConfModalControllerButton
-							primary={controllersConfig.video}
-							text={controllersConfig.video ? t('Cam_on') : t('Cam_off')}
-							title={controllersConfig.video ? t('Cam_on') : t('Cam_off')}
-							icon={controllersConfig.video ? 'video' : 'video-off'}
-							onClick={handleToggleVideo}
-						/>
-					</VideoConfModalController>
+					<VideoConfController
+						primary={controllersConfig.mic}
+						text={controllersConfig.mic ? t('Mic_on') : t('Mic_off')}
+						title={controllersConfig.mic ? t('Mic_on') : t('Mic_off')}
+						icon={controllersConfig.mic ? 'mic' : 'mic-off'}
+						onClick={handleToggleMic}
+					/>
+					<VideoConfController
+						primary={controllersConfig.video}
+						text={controllersConfig.video ? t('Cam_on') : t('Cam_off')}
+						title={controllersConfig.video ? t('Cam_on') : t('Cam_off')}
+						icon={controllersConfig.video ? 'video' : 'video-off'}
+						onClick={handleToggleVideo}
+					/>
 				</VideoConfModalControllers>
 				<VideoConfModalField>
 					<TextInput
@@ -73,10 +62,10 @@ const StartGroupVideoConfModal = ({ room, onClose }: StartGroupVideoConfModalPro
 				</VideoConfModalField>
 			</VideoConfModalContent>
 			<VideoConfModalFooter>
-				<VideoConfModalFooterButton primary icon='phone'>
+				<VideoConfButton onClick={onConfirm} primary icon='phone'>
 					{t('Start_call')}
-				</VideoConfModalFooterButton>
-				<VideoConfModalFooterButton onClick={onClose}>{t('Cancel')}</VideoConfModalFooterButton>
+				</VideoConfButton>
+				<VideoConfButton onClick={onClose}>{t('Cancel')}</VideoConfButton>
 			</VideoConfModalFooter>
 		</VideoConfModal>
 	);
