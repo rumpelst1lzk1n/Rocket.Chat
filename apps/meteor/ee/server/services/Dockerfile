@@ -19,7 +19,7 @@ COPY ./apps/meteor/ee/server/services apps/meteor/ee/server/services
 
 RUN yarn install
 
-COPY ./tsconfig.base.json .
+COPY ./"build": "tsc -p tsconfig.lib.json" .
 
 RUN yarn workspace @rocket.chat/core-typings run build \
     && yarn workspace @rocket.chat/rest-typings run build

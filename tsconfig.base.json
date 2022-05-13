@@ -1,19 +1,11 @@
 {
+	"extends": "./tsconfig.lib.json",
 	"compilerOptions": {
-		"target": "es5",
-		"module": "commonjs",
-		"declaration": true,
-		"declarationMap": true,
-		"sourceMap": true,
-		"composite": true,
-		"strict": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		"moduleResolution": "node",
-		"resolveJsonModule": true,
-		"jsx": "react-jsx",
-		"importsNotUsedAsValues": "error"
+		"paths": {
+			"@rocket.chat/core-typings": ["./packages/core-typings/src/index.ts"],
+			"@rocket.chat/rest-typings": ["./packages/rest-typings/src/index.ts"],
+			"@rocket.chat/ui-context": ["./packages/ui-context/src/index.ts"]
+		}
 	},
 	"exclude": ["node_modules", "**/*.spec.ts"],
 	"references": [{ "path": "./packages/core-typings" }, { "path": "./packages/rest-typings" }, { "path": "./packages/ui-contexts" }]
