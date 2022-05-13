@@ -1,12 +1,12 @@
 {
 	"extends": "./tsconfig.lib.json",
 	"compilerOptions": {
+		"composite": true,
 		"paths": {
 			"@rocket.chat/core-typings": ["./packages/core-typings/src/index.ts"],
 			"@rocket.chat/rest-typings": ["./packages/rest-typings/src/index.ts"],
 			"@rocket.chat/ui-context": ["./packages/ui-context/src/index.ts"]
 		}
 	},
-	"exclude": ["node_modules", "**/*.spec.ts"],
-	"references": [{ "path": "./packages/core-typings" }, { "path": "./packages/rest-typings" }, { "path": "./packages/ui-contexts" }]
+	"exclude": ["node_modules", "**/*.spec.ts"]
 }
