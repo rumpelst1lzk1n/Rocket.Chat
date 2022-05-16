@@ -2,10 +2,10 @@
 import type { ISubscription, IMessage } from '@rocket.chat/core-typings';
 import { Message as MessageTemplate, MessageLeftContainer, MessageContainer, MessageBody, CheckBox } from '@rocket.chat/fuselage';
 import { useToggle } from '@rocket.chat/fuselage-hooks';
-import { useUser } from '@rocket.chat/ui-contexts';
 import React, { FC, memo } from 'react';
 
 import UserAvatar from '../../../../components/avatar/UserAvatar';
+import { usePresence } from '../../../../hooks/usePresence';
 import { useIsMessageHighlight } from '../contexts/MessageHighlightContext';
 import { useIsSelecting, useToggleSelect, useIsSelectedMessage, useCountSelected } from '../contexts/SelectedMessagesContext';
 import MessageContent from './MessageContent';
@@ -22,7 +22,7 @@ const Message: FC<{ message: IMessage; sequential: boolean; subscription?: ISubs
 }) => {
 	const isMessageHighlight = useIsMessageHighlight(message._id);
 	const [isMessageIgnored, toggleMessageIgnored] = useToggle(message.ignored);
-	const user = useUser();
+	const user = usePresence(message.u._id);
 
 	const isSelecting = useIsSelecting();
 	const toggleSelected = useToggleSelect(message._id);

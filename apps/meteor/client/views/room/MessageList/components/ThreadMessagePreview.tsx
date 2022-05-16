@@ -11,10 +11,11 @@ import {
 	ThreadMessageUnfollow,
 	CheckBox,
 } from '@rocket.chat/fuselage';
-import { useTranslation, useUser } from '@rocket.chat/ui-contexts';
+import { useTranslation } from '@rocket.chat/ui-contexts';
 import React, { FC } from 'react';
 
 import UserAvatar from '../../../../components/avatar/UserAvatar';
+import { usePresence } from '../../../../hooks/usePresence';
 import { AsyncStatePhase } from '../../../../lib/asyncState';
 import { useMessageActions } from '../../contexts/MessageContext';
 import { useIsSelecting, useToggleSelect, useIsSelectedMessage, useCountSelected } from '../contexts/SelectedMessagesContext';
@@ -29,7 +30,7 @@ export const ThreadMessagePreview: FC<{ message: IThreadMessage; sequential: boo
 	const parentMessage = useParentMessage(message.tmid);
 	const body = useMessageBody(parentMessage.value);
 	const t = useTranslation();
-	const user = useUser();
+	const user = usePresence(message.u._id);
 
 	const isSelecting = useIsSelecting();
 	const toggleSelected = useToggleSelect(message._id);
