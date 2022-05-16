@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 import { IMessage, isDiscussionMessage, isThreadMainMessage, ISubscription } from '@rocket.chat/core-typings';
-import { MessageBody } from '@rocket.chat/fuselage';
+import { Box, MessageBody } from '@rocket.chat/fuselage';
 import { useUserId, TranslationKey } from '@rocket.chat/ui-contexts';
 import React, { FC, memo } from 'react';
 
@@ -45,7 +45,12 @@ const MessageContent: FC<{ message: IMessage; sequential: boolean; subscription?
 			<MessageBody data-qa-type='message-body'>
 				<MessageRender message={message} />
 			</MessageBody>
-			{message.blocks && <MessageBlock mid={message._id} blocks={message.blocks} appId rid={message.rid} />}
+
+			{message.blocks && (
+				<Box maxWidth='400px'>
+					<MessageBlock mid={message._id} blocks={message.blocks} appId rid={message.rid} />
+				</Box>
+			)}
 			{message.attachments && <Attachments attachments={message.attachments} file={message.file} />}
 
 			{message.actionLinks?.length && (
