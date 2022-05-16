@@ -11,7 +11,7 @@ import {
 	ThreadMessageUnfollow,
 	CheckBox,
 } from '@rocket.chat/fuselage';
-import { useTranslation } from '@rocket.chat/ui-contexts';
+import { useTranslation, useUser } from '@rocket.chat/ui-contexts';
 import React, { FC } from 'react';
 
 import UserAvatar from '../../../../components/avatar/UserAvatar';
@@ -29,6 +29,7 @@ export const ThreadMessagePreview: FC<{ message: IThreadMessage; sequential: boo
 	const parentMessage = useParentMessage(message.tmid);
 	const body = useMessageBody(parentMessage.value);
 	const t = useTranslation();
+	const user = useUser();
 
 	const isSelecting = useIsSelecting();
 	const toggleSelected = useToggleSelect(message._id);
@@ -55,7 +56,7 @@ export const ThreadMessagePreview: FC<{ message: IThreadMessage; sequential: boo
 			)}
 			<ThreadMessageRow onClick={!message.ignored && !isSelecting ? openThread(message.tmid, message._id) : undefined}>
 				<ThreadMessageLeftContainer>
-					{!isSelecting && <UserAvatar username={message.u.username} size='x18' />}
+					{!isSelecting && <UserAvatar username={message.u.username} size='x18' etag={user?.avatarETag} />}
 					{isSelecting && <CheckBox checked={isSelected} onChange={toggleSelected} />}
 				</ThreadMessageLeftContainer>
 				<ThreadMessageContainer>
