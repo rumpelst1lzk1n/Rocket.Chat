@@ -11,23 +11,23 @@ import {
 	ThreadMessageUnfollow,
 	CheckBox,
 } from '@rocket.chat/fuselage';
-import { useTranslation, useUser } from '@rocket.chat/ui-contexts';
+import { useTranslation } from '@rocket.chat/ui-contexts';
 import React, { FC } from 'react';
 
 import UserAvatar from '../../../../components/avatar/UserAvatar';
+import { AsyncStatePhase } from '../../../../lib/asyncState';
 import { useMessageActions } from '../../contexts/MessageContext';
 import { useIsSelecting, useToggleSelect, useIsSelectedMessage, useCountSelected } from '../contexts/SelectedMessagesContext';
+import { useMessageBody } from '../hooks/useMessageBody';
 import { useParentMessage } from '../hooks/useParentMessage';
-import { useParentMessageTransform } from '../hooks/useParentMessageTransform';
 import MessageRender from './MessageRender';
 
 export const ThreadMessagePreview: FC<{ message: IThreadMessage; sequential: boolean }> = ({ message, sequential, ...props }) => {
 	const {
 		actions: { openThread },
 	} = useMessageActions();
-	const getParentMessage = useParentMessage(message.tmid);
-	const parentMessage = useParentMessageTransform(getParentMessage.value);
-	const user = useUser();
+	const parentMessage = useParentMessage(message.tmid);
+	const body = useMessageBody(parentMessage.value);
 	const t = useTranslation();
 
 	const isSelecting = useIsSelecting();
@@ -48,16 +48,14 @@ export const ThreadMessagePreview: FC<{ message: IThreadMessage; sequential: boo
 						<ThreadMessageIconThread />
 					</ThreadMessageLeftContainer>
 					<ThreadMessageContainer>
-						<ThreadMessageOrigin>
-							{parentMessage ? <MessageRender isThreadPreview message={parentMessage} /> : <Skeleton />}
-						</ThreadMessageOrigin>
+						<ThreadMessageOrigin>{parentMessage.phase === AsyncStatePhase.RESOLVED ? body : <Skeleton />}</ThreadMessageOrigin>
 						<ThreadMessageUnfollow />
 					</ThreadMessageContainer>
 				</ThreadMessageRow>
 			)}
 			<ThreadMessageRow onClick={!message.ignored && !isSelecting ? openThread(message.tmid, message._id) : undefined}>
 				<ThreadMessageLeftContainer>
-					{!isSelecting && <UserAvatar username={message.u.username} etag={user?.avatarETag} size='x18' />}
+					{!isSelecting && <UserAvatar username={message.u.username} size='x18' />}
 					{isSelecting && <CheckBox checked={isSelected} onChange={toggleSelected} />}
 				</ThreadMessageLeftContainer>
 				<ThreadMessageContainer>
