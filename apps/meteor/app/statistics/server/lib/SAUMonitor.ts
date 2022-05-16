@@ -189,9 +189,7 @@ export class SAUMonitorClass {
 		if (!connection) {
 			return;
 		}
-
 		const ip = getClientAddress(connection);
-
 		const host = connection.httpHeaders?.host ?? '';
 		const loginToken = connection?.loginToken ? { loginToken: connection?.loginToken } : {};
 		return {
